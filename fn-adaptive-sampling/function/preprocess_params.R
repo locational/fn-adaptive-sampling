@@ -1,14 +1,18 @@
 function(params) {
   # Individual check for each parameter
-  # if (is.null(params[['number']])) {
-  #   stop('Missing `number` parameter')
-  # }
-  # if (!is.numeric(params[['number']])) {
-  #   stop('Parameter `number` is not numeric')
-  # }
-  # if (length(params[['number']]) != 1) {
-  #   stop('Only pass a single value for `number')
-  # }
+  if (is.null(params[['point_data']])) {
+    stop('Missing `point_data` parameter')
+  }
+  # TODO: Check GeoJSON Features have required properties
+  
+  # if batch_size exists, must be a number > 0
+  if (!is.null(params[['batch_size']])) {
+    if (!is.numeric(params[['batch_size']])) {
+      stop('Parameter `batch_size` is not numeric')
+    }
 
-  # Optional replacement of URLs with retrieved data
+    if (params[['batch_size']] < 1) {
+      stop('Parameter `batch_size` must be greater than zero')
+    }
+  }
 }
