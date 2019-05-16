@@ -7,17 +7,21 @@ function(params) {
   batch_size = if (is.null(params[['batch_size']])) 1 else params[['batch_size']]
 
   # 2. Process
-  candidates = st_read(as.json(candidates_geojson), quiet=T) # creates sf object
+  candidates <- candidates_copy <- st_read(as.json(candidates_geojson), quiet=T) # creates sf object
   candidates$uncertainty_prob <- candidates$uncertainty / sum(candidates$uncertainty)
-
+  
+  # Give each an id
+  candidates$id <- 1:nrow(candidates)
   in_sample <- sample(1:nrow(candidates), 1, prob = candidates$uncertainty_prob)
   
-  candidates_in_sample <- candidates[in_sample,]
-  candidates_not_in_sample <- candidates[-in_sample,]
+
   # Loop
-  
   if (batch_size > 1) {
     for (i in 1:(batch_size - 1)) {
+      
+      # Define which is in and out of sample
+      candidates_in_sample <- candidates[in_sample,]
+      candidates_not_in_sample <- candidates[-in_sample,]
 
       # First calc distance between the in_sample and the rest
       nn <- nn2(st_coordinates(candidates_in_sample), st_coordinates(candidates_not_in_sample))
@@ -35,13 +39,12 @@ function(params) {
       
       # Sample
       uncertainty_sample <- sample(1:nrow(candidates_not_in_sample), 1, prob = candidates_not_in_sample$uncertainty_prob)
-      candidates_in_sample <- rbind(candidates_in_sample, candidates_not_in_sample[uncertainty_sample,-"pen_uncertainty"])
-      candidates_not_in_sample <- candidates_not_in_sample[-uncertainty_sample,]
+      in_sample <- c(in_sample, candidates_not_in_sample$id[uncertainty_sample])
     }
   }
 
   # 3. Package response
 
   # Return just the 'sample'
-  return(candidates_in_sample)
+  return(geojson_list(candidates_copy[in_sample,]))
 }
