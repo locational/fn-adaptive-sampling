@@ -3,24 +3,17 @@ library(RANN)
 function(params) {
   # 1. Handle input
   candidates_geojson = params[['point_data']]
-  batch_size = params[['batch_size']]
+  batch_size = if is.null(params[['batch_size']]) 1 else params[['batch_size']]
 
   # 2. Process
-  candidates = st_read(as.json(candidates_geojson))
+  candidates = st_read(as.json(candidates_geojson)) # creates sf object
 
-  ncol <- ncol(candidates)
-  candidates$entropy <- entropy
-  candidates$entropy_prob <- entropy / sum(entropy)
-  
-  # Optional - you can transform probability to make it even more likely to sample high entropy areas
-  #candidates$entropy_prob <- candidates$entropy_prob^8 / sum(candidates$entropy_prob^8)
-  
-  candidates$id <- 1:nrow(candidates)
+  candidates$uncertainty_prob <- candidates$uncertainty / sum(candidates$uncertainty)
   
   in_sample <-
-    sample(1:nrow(candidates), 1, prob = candidates$entropy_prob)
+    sample(1:nrow(candidates), 1, prob = candidates$uncertainty_prob)
   samp_prob <-
-    samp_entropy_prob  <- candidates$entropy_prob[in_sample]
+    samp_entropy_prob  <- candidates$uncertainty_prob[in_sample]
   samp_entropy <- candidates$entropy[in_sample]
   
 
