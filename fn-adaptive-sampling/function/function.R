@@ -7,18 +7,17 @@ function(params) {
 
   # 2. Process
   candidates = st_read(as.json(candidates_geojson)) # creates sf object
-
   candidates$uncertainty_prob <- candidates$uncertainty / sum(candidates$uncertainty)
-  
+
   in_sample <- sample(1:nrow(candidates), 1, prob = candidates$uncertainty_prob)
   
+  candidates_in_sample <- candidates[in_sample,]
+  candidates_not_in_sample <- candidates[!in_sample,]
   # Loop
   
   if (batch_size > 1) {
     for (i in 1:(batch_size - 1)) {
-      candidates_in_sample <- candidates[in_sample,]
-      candidates_not_in_sample <- candidates[-in_sample,]
-      
+
       # First calc distance between the in_sample and the rest
       nn <- nn2(st_coordinates(candidates_in_sample), st_coordinates(candidates_not_in_sample))
       
@@ -27,36 +26,21 @@ function(params) {
       min_dist_to_other_points <- min_dist_to_other_points / sum(min_dist_to_other_points)
       
       # Multiply by entropy
-      candidates_not_in_sample$pen_entropy <-
-        candidates_not_in_sample$entropy_prob * min_dist_to_other_points #* mean_dist_to_nearest_neighbours_inv
-      candidates_not_in_sample$pen_entropy_prob <-
-        candidates_not_in_sample$pen_entropy / sum(candidates_not_in_sample$pen_entropy)
+      candidates_not_in_sample$pen_uncertainty <- 
+        candidates_not_in_sample$uncertainty_prob * min_dist_to_other_points
+      
+      candidates_not_in_sample$pen_uncertainty_prob <- 
+        candidates_not_in_sample$pen_uncertainty / sum(candidates_not_in_sample$pen_uncertainty)
       
       # Sample
-      entropy_sample <-
-        sample(1:nrow(candidates_not_in_sample),
-               1,
-               prob = candidates_not_in_sample$pen_entropy_prob)
-      next_site <- candidates_not_in_sample$id[entropy_sample]
-      samp_prob <-
-        c(samp_prob, candidates_not_in_sample$pen_entropy_prob[entropy_sample])
-      samp_entropy <-
-        c(samp_entropy, candidates_not_in_sample$entropy[entropy_sample])
-      samp_entropy_prob <-
-        c(samp_entropy_prob,
-          candidates_not_in_sample$entropy_prob[entropy_sample])
-      in_sample <- c(in_sample, next_site)
+      uncertainty_sample <- sample(1:nrow(candidates_not_in_sample), 1, prob = candidates_not_in_sample$pen_uncertainty_prob)
+      candidates_in_sample <- rbind(candidates_in_sample, candidates_not_in_sample[uncertainty_sample,])
+      candidates_not_in_sample <- candidates_not_in_sample[-uncertainty_sample,]
     }
   }
-  
-
-
-
 
   # 3. Package response
 
   # Return just the 'sample'
-  response = candidates[in_sample, 1:ncol]
-  
-  return(response)
+  return(candidates_in_sample)
 }
