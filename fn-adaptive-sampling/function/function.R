@@ -3,11 +3,11 @@ library(sf)
 
 function(params) {
   # 1. Handle input
-  candidates_geojson = params[['point_data']]
+  point_data_sf = params[['point_data_sf']]
   batch_size = if (is.null(params[['batch_size']])) 1 else params[['batch_size']]
 
   # 2. Process
-  candidates <- candidates_copy <- st_read(as.json(candidates_geojson), quiet=T) # creates sf object
+  candidates <- candidates_copy <- point_data_sf
   candidates$uncertainty_prob <- candidates$uncertainty / sum(candidates$uncertainty)
   
   # Give each an id
