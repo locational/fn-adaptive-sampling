@@ -1,0 +1,14 @@
+provider:
+  name: faas
+  gateway: https://faas.srv.disarm.io
+functions:
+  fn-adaptive-sampling:
+    lang: dockerfile
+    handler: ./fn-adaptive-sampling
+    image: disarm/fn-adaptive-sampling:0.0.1
+    environment:
+      exec_timeout: 60
+      write_timeout: 70
+      read_timeout: 70
+      combine_output: false
+      # write_debug: true
