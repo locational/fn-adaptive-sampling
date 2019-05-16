@@ -27,5 +27,6 @@ function(params) {
     }
   }
 
+  # NOTE: Not all DiSARM functions use a `main.R` file that mutates the params. This one does.
   return(params)
 }

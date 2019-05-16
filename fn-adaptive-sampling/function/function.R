@@ -3,6 +3,7 @@ library(sf)
 
 function(params) {
   # 1. Handle input
+  # NOTE: from preprocess_params
   point_data_sf = params[['point_data_sf']]
   batch_size = if (is.null(params[['batch_size']])) 1 else params[['batch_size']]
 
