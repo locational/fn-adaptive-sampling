@@ -1,6 +1,13 @@
 library(RANN)
 
 function(params) {
+  # 1. Handle input
+  candidates_geojson = params[['point_data']]
+  batch_size = params[['batch_size']]
+
+  # 2. Process
+  candidates = st_read(as.json(candidates_geojson))
+
   ncol <- ncol(candidates)
   candidates$entropy <- entropy
   candidates$entropy_prob <- entropy / sum(entropy)
@@ -15,6 +22,9 @@ function(params) {
   samp_prob <-
     samp_entropy_prob  <- candidates$entropy_prob[in_sample]
   samp_entropy <- candidates$entropy[in_sample]
+  
+
+  # Loop
   
   if (batch_size > 1) {
     for (i in 1:(batch_size - 1)) {
@@ -62,6 +72,12 @@ function(params) {
     }
   }
   
+
+
+
+
+  # 3. Package response
+
   # Return just the 'sample'
   response = candidates[in_sample, 1:ncol]
   
