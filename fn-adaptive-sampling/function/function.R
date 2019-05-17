@@ -7,7 +7,6 @@ function(params) {
   point_data = params[['point_data']]
   batch_size = params[['batch_size']]
   uncertainty_fieldname = params[['uncertainty_fieldname']]
-  print(batch_size)
 
   # 2. Process
   candidates <- candidates_copy <- point_data
