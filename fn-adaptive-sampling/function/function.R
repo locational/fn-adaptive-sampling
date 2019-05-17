@@ -5,7 +5,7 @@ function(params) {
   # 1. Handle input
   # NOTE: from preprocess_params
   point_data = params[['point_data']]
-  batch_size = if (is.null(params[['batch_size']])) 1 else params[['batch_size']]
+  batch_size = params[['batch_size']]
   uncertainty_fieldname = params[['uncertainty_fieldname']]
   print(batch_size)
 

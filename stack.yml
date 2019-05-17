@@ -5,7 +5,7 @@ functions:
   fn-adaptive-sampling:
     lang: dockerfile
     handler: ./fn-adaptive-sampling
-    image: disarm/fn-adaptive-sampling:0.1.1
+    image: disarm/fn-adaptive-sampling:0.1.2
     environment:
       exec_timeout: 60
       write_timeout: 70
