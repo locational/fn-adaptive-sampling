@@ -1,4 +1,5 @@
 {
+  "uncertainty_fieldname": "uncertainty",
   "point_data": {
     "type": "FeatureCollection",
     "features": [

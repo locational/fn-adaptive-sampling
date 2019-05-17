@@ -4,12 +4,14 @@ library(sf)
 function(params) {
   # 1. Handle input
   # NOTE: from preprocess_params
-  point_data_sf = params[['point_data_sf']]
+  point_data = params[['point_data']]
   batch_size = if (is.null(params[['batch_size']])) 1 else params[['batch_size']]
+  uncertainty_fieldname = params[['uncertainty_fieldname']]
+  print(batch_size)
 
   # 2. Process
-  candidates <- candidates_copy <- point_data_sf
-  candidates$uncertainty_prob <- candidates$uncertainty / sum(candidates$uncertainty)
+  candidates <- candidates_copy <- point_data
+  candidates$uncertainty_prob <- as.data.frame(candidates)[, uncertainty_fieldname] / sum(as.data.frame(candidates)[, uncertainty_fieldname])
   
   # Give each an id
   candidates$id <- 1:nrow(candidates)
