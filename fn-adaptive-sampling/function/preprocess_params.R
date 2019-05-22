@@ -30,9 +30,9 @@ function(params) {
 
   # Check 
   uncertainty_fieldname = params[['uncertainty_fieldname']]
-  rows_we_can_sample = sum(as.data.frame(point_data)[, uncertainty_fieldname] > 0 & !is.na(as.data.frame(point_data)[, uncertainty_fieldname]))
+  rows_we_can_sample = sum(!is.na(as.data.frame(point_data)[, uncertainty_fieldname]))
   if (params[['batch_size']] > rows_we_can_sample) {
-    stop('Batch size is larger than the number of points for which uncertainty is available (greater than zero or not NA)')
+    stop('Batch size is larger than the number of points for which uncertainty is available (not NA)')
   }
 
 

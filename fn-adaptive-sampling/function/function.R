@@ -12,6 +12,9 @@ function(params) {
   candidates <- candidates_copy <- point_data
   candidates$uncertainty_prob <- as.data.frame(candidates)[, uncertainty_fieldname] / sum(as.data.frame(candidates)[, uncertainty_fieldname])
   
+  # Change any 0 probabilities to 0.0001 to allow them to be included (effectively randomly)
+  candidates$uncertainty_prob[candidates$uncertainty_prob==0] <- 0.0001
+  
   # Give each an id
   candidates$id <- 1:nrow(candidates)
   in_sample <- sample(1:nrow(candidates), 1, prob = candidates$uncertainty_prob)
