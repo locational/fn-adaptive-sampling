@@ -7,7 +7,7 @@ Designed to be used with `fn-prevalence-predictor`.
 ## Parameters
 
 A nested JSON object containing:
-- `point_data` - {GeoJSON FeatureCollection} Required. With following property fields for each location:
+- `point_data` - {GeoJSON FeatureCollection} Required.
 - `uncertainty_fieldname` - name of properties field which contains uncertainty value
 - `batch_size` - {integer} Representing the number of locations to adaptively sample. Defaults to 1.
 
