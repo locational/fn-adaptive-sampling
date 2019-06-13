@@ -50,6 +50,8 @@ function(params) {
 
   # 3. Package response
 
-  # Return just the 'sample'
-  return(geojson_list(candidates_copy[in_sample,]))
+  # Return points with additional column
+  candidates_copy$adaptively_selected <- 0
+  candidates_copy$adaptively_selected[in_sample] <- 1
+  return(geojson_list(candidates_copy))
 }
