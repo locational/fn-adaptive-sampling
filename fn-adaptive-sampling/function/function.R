@@ -8,12 +8,14 @@ function(params) {
   batch_size = params[['batch_size']]
   uncertainty_fieldname = params[['uncertainty_fieldname']]
 
+  
   # 2. Process
   candidates <- candidates_copy <- point_data
-  candidates$uncertainty_prob <- as.data.frame(candidates)[, uncertainty_fieldname] / sum(as.data.frame(candidates)[, uncertainty_fieldname])
   
   # Change any 0 probabilities to 0.0001 to allow them to be included (effectively randomly)
-  candidates$uncertainty_prob[candidates$uncertainty_prob==0] <- 0.0001
+  candidates[[uncertainty_fieldname]] [candidates[[uncertainty_fieldname]]==0] <- 0.0001
+  
+  candidates$uncertainty_prob <- as.data.frame(candidates)[, uncertainty_fieldname] / sum(as.data.frame(candidates)[, uncertainty_fieldname])
   
   # Give each an id
   candidates$id <- 1:nrow(candidates)
