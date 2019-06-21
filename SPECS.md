@@ -1,6 +1,6 @@
 # fn-adaptive-sampling
 
-Take a GeoJSON FeatureCollection of points with observations and prediction points, with uncertainty values, and we'll recommend the next _n_ sites to survey in order to minimize uncertainty.
+Take a GeoJSON FeatureCollection of points with observations and prediction points, with uncertainty values from model predictions, and we'll recommend the next n sites to survey in order to minimize uncertainty when updating the same model.
 
 Designed to be used with `fn-prevalence-predictor`.
 
