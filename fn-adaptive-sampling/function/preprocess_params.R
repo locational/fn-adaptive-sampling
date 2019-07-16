@@ -21,8 +21,9 @@ function(params) {
     stop('Missing required `point_data` parameter')
   }
 
+  # Default value for uncertainty_fieldname
   if (is.null(params[['uncertainty_fieldname']])) {
-    stop('Mising required `uncertainty_fieldname` parameter')
+    params[['uncertainty_fieldname']] = 'exceedance_uncertainty'
   }
 
   point_data = st_read(as.json(params[['point_data']]), quiet=T)
