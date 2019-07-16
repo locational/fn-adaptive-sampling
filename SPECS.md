@@ -8,8 +8,8 @@ Designed to be used with `fn-prevalence-predictor`.
 
 A nested JSON object containing:
 - `point_data` - {GeoJSON FeatureCollection} Required.
-- `uncertainty_fieldname` - name of properties field which contains uncertainty value
-- `batch_size` - {integer} Representing the number of locations to adaptively sample. Defaults to 1.
+- `uncertainty_fieldname` - {string} Optional. Name of properties field which contains uncertainty value. Defaults to 'exceedance_uncertainty'.
+- `batch_size` - {integer} Optional. Number of locations to adaptively sample. Defaults to 1.
 
 The value of the `uncertainty_fieldname` can be zero or NA, but those points will be excluded from the sample. The batch size cannot be larger than the number of points with an uncertainty value greater than zero.
 
