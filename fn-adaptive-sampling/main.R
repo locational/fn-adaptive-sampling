@@ -8,7 +8,7 @@ main = function () {
   tryCatch({
     # reads STDIN as JSON, return error if any problems
     incoming = readLines(file("stdin"))
-    if is.null(incoming) {
+    if (is.null(incoming)) {
       stop("Request received by function is not valid JSON. Please check docs")
     }
     params = fromJSON(incoming)
