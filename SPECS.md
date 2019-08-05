@@ -21,4 +21,4 @@ The value of the `uncertainty_fieldname` can be zero or NA, but those points wil
 
 ## Response
 
-GeoJSON FeatureCollection with number of features equal to `batch_size` representing the recommended survey locations, identified with a `adaptively_selected` column.
+The input GeoJSON FeatureCollection is returned. An additional property `adaptively_selected` is added to the requested number of targets (using `batch_size` if set), which is `true` for the targets selected, and `false` for those not targeted.
