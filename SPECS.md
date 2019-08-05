@@ -13,6 +13,8 @@ A nested JSON object containing:
 
 The value of the `uncertainty_fieldname` can be zero or NA, but those points will be excluded from the sample. The batch size cannot be larger than the number of points with an uncertainty value greater than zero.
 
+You can set the value of the `uncertainty_fieldname` to 1 for all points, where you have no predictions to work from, e.g. for generating an initial recommendation.
+
 ## Constraints
 
 - maximum number of points/features
