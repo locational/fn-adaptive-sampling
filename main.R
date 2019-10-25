@@ -41,7 +41,7 @@ retrieve_remote_files = function(params) {
 
 handle_error = function(error) {
   type = 'error'
-  function_response = as.json(list(function_status = unbox(type), result = unbox(as.character(error))))
+  function_response = as.json(list(function_status = unbox(type), result = unbox(unbox(error$message))))
   return(write(function_response, stdout()))
 }
 
