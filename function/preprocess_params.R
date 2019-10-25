@@ -36,7 +36,8 @@ function(params) {
     uncertainty_fieldname = params[['uncertainty_fieldname']]
     rows_we_can_sample = sum(!is.na(as.data.frame(point_data)[, uncertainty_fieldname]))
   }, error = function(e) {
-    stop(paste0('Cannot find fields for given uncertainty_fieldname `', uncertainty_fieldname, '`. Check point_data'))
+    stop(paste0('Error finding `', uncertainty_fieldname, '` on records in `point_data`. ', 
+        'Check the value of `uncertainty_fieldname` parameter, it should be a property on at least some of the `point_data`'))
   })
   if (params[['batch_size']] > rows_we_can_sample) {
     stop(
